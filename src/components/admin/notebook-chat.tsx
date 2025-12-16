@@ -1,14 +1,19 @@
 "use client";
 
-import { useChat, type Message } from "@ai-sdk/react";
+import { useChat } from "@ai-sdk/react";
 import { Send, Upload } from "lucide-react";
 import { useState } from "react";
 
+// Fallback type if 'ai' export fails
+type Message = any;
+
 export function NotebookChat() {
     const [context, setContext] = useState("");
-    const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+    const chatHelpers = useChat({
         body: { context },
-    });
+    } as any) as any;
+
+    const { messages, input, handleInputChange, handleSubmit, isLoading } = chatHelpers;
 
     return (
         <div className="flex h-[calc(100vh-12rem)] border rounded-xl overflow-hidden bg-white shadow-sm">

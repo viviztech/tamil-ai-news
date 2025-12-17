@@ -7,6 +7,7 @@ import { z } from "zod";
 // Define the schema for structured AI output (Article Metadata)
 const newsMetadataSchema = z.object({
     title_ta: z.string().describe("Catchy headline in Tamil"),
+    slug_en: z.string().describe("URL-friendly English slug (kebab-case) based on the title, max 50 chars"),
     summary_ta: z.array(z.string()).describe("3-5 bullet points summarizing the article in Tamil"),
     category: z.enum(["politics", "cinema", "technology", "world", "sports", "business"]),
     seo_tags: z.array(z.string()).describe("10 relevant SEO keywords in English and Tamil"),

@@ -25,6 +25,7 @@ export function AIEditorTools({
             if (result.success && result.data) {
                 onUpdate({
                     title: result.data.title_ta,
+                    slug: result.data.slug_en,
                     summary: result.data.summary_ta.join("\n"),
                     seoTags: result.data.seo_tags.join(", "),
                     category: result.data.category,

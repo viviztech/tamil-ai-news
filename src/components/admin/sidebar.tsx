@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, FileText, PlusCircle, Settings, LogOut, Sparkles } from "lucide-react";
+import { LayoutDashboard, FileText, PlusCircle, Settings, LogOut, Sparkles, Tags } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
     { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
     { href: "/admin/articles", label: "Articles", icon: FileText },
+    { href: "/admin/categories", label: "Categories", icon: Tags },
     { href: "/admin/articles/new", label: "New Article", icon: PlusCircle },
     { href: "/admin/analysis", label: "Source Analysis", icon: Sparkles },
     { href: "/admin/settings", label: "Settings", icon: Settings },

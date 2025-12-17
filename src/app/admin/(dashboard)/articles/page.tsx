@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Plus, Search, MoreVertical, Edit, Trash2, Eye } from "lucide-react";
 import { createServerClient } from "@supabase/ssr";
+import { DeleteArticleButton } from "@/components/admin/delete-article-button";
 import { cookies } from "next/headers";
 import { format } from "date-fns";
 
@@ -107,9 +108,7 @@ export default async function ArticlesPage() {
                                         >
                                             <Edit className="w-4 h-4" />
                                         </Link>
-                                        <button className="p-2 hover:bg-slate-100 rounded-lg text-slate-500 hover:text-red-600 transition-colors">
-                                            <Trash2 className="w-4 h-4" />
-                                        </button>
+                                        <DeleteArticleButton id={article.id} />
                                     </div>
                                 </td>
                             </tr>

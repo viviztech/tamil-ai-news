@@ -1,16 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { Save, ArrowLeft, Loader2 } from "lucide-react";
+import { Save, ArrowLeft, Loader2, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AIEditorTools } from "@/components/admin/ai-tools";
 import { createBrowserClient } from "@supabase/ssr";
 import { createArticle } from "@/app/actions/articles";
+import { generateImageReal } from "@/app/actions/image-generation";
 
 export default function NewArticlePage() {
     const router = useRouter();
     const [publishing, setPublishing] = useState(false);
+    const [generatingImage, setGeneratingImage] = useState(false);
     const [formData, setFormData] = useState({
         title: "",
         slug: "",
@@ -18,6 +20,7 @@ export default function NewArticlePage() {
         content: "",
         category: "generative-ai",
         seoTags: "",
+        image_url: "",
         status: "draft"
     });
 
@@ -43,6 +46,26 @@ export default function NewArticlePage() {
             alert("An unexpected error occurred.");
         } finally {
             setPublishing(false);
+        }
+    };
+
+    const onGenerateImage = async () => {
+        if (!formData.title) {
+            alert("Please enter a title first to generate an image.");
+            return;
+        }
+        setGeneratingImage(true);
+        try {
+            const result = await generateImageReal(formData.title + " news header, highly detailed, 4k");
+            if (result.success && result.url) {
+                setFormData(prev => ({ ...prev, image_url: result.url }));
+            } else {
+                alert("Generation Failed: " + (result.message || "Unknown error"));
+            }
+        } catch (e) {
+            alert("Error generating image");
+        } finally {
+            setGeneratingImage(false);
         }
     };
 
@@ -119,6 +142,39 @@ export default function NewArticlePage() {
                                 <option value="ai-ethics">AI Ethics (AI நெறிமுறைகள்)</option>
                                 <option value="startups">AI Startups (AI நிறுவனங்கள்)</option>
                             </select>
+                        </div>
+
+                        <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                                <label className="text-sm font-medium text-slate-700">Featured Image URL</label>
+                                <button
+                                    type="button"
+                                    onClick={onGenerateImage}
+                                    disabled={generatingImage}
+                                    className="text-xs flex items-center gap-1 text-red-600 hover:underline disabled:opacity-50"
+                                >
+                                    {generatingImage ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
+                                    Auto-Generate (AI)
+                                </button>
+                            </div>
+                            <input
+                                type="text"
+                                value={formData.image_url}
+                                onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+                                className="w-full px-3 py-2 border rounded-md text-sm"
+                                placeholder="https://..."
+                            />
+                            {formData.image_url && (
+                                <div className="mt-2 relative h-32 w-full rounded-md overflow-hidden bg-slate-100 border">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src={formData.image_url}
+                                        alt="Preview"
+                                        className="object-cover w-full h-full"
+                                        onError={(e) => (e.currentTarget.style.display = 'none')}
+                                    />
+                                </div>
+                            )}
                         </div>
 
                         <div className="space-y-2">

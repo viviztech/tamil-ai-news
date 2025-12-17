@@ -6,13 +6,13 @@ import { cookies } from "next/headers";
 export async function createArticle(formData: any) {
     const cookieStore = await cookies();
 
-    // 1. Check for Placeholder Keys
-    if (process.env.NEXT_PUBLIC_SUPABASE_URL?.includes("placeholder")) {
-        return {
-            success: false,
-            message: "Supabase not connected. Please set real credentials in .env.local"
-        };
-    }
+    // 1. Check for Placeholder Keys - REMOVED (Letting real connection attempt happen)
+    // if (process.env.NEXT_PUBLIC_SUPABASE_URL?.includes("placeholder")) {
+    //     return {
+    //         success: false,
+    //         message: "Supabase not connected. Please set real credentials in .env.local"
+    //     };
+    // }
 
     // 2. Initialize Supabase
     const supabase = createServerClient(
@@ -65,6 +65,7 @@ export async function createArticle(formData: any) {
             content: formData.content,
             ai_summary_ta: formData.summary,
             summary: formData.summary,
+            image_url: formData.image_url,
             category_id: categoryData?.id || null,
             is_published: true,
             tags: formData.seoTags ? formData.seoTags.split(',').map((t: string) => t.trim()) : [],

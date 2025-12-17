@@ -197,6 +197,17 @@ export default function NewArticlePage() {
                                 placeholder="news, tamil, breaking..."
                             />
                         </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-slate-700">URL Slug (English)</label>
+                            <input
+                                type="text"
+                                value={formData.slug}
+                                onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                                className="w-full px-3 py-2 border rounded-md text-sm font-mono text-slate-600 bg-slate-50"
+                                placeholder="url-slug-here"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

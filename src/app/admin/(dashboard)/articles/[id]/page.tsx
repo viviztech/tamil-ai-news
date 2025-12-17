@@ -81,6 +81,7 @@ export default function EditArticlePage() {
             .from('articles')
             .update({
                 title: formData.title,
+                slug: formData.slug,
                 content: formData.content,
                 summary: formData.summary,
                 image_url: formData.image_url,
@@ -215,6 +216,17 @@ export default function EditArticlePage() {
                                 onChange={(e) => setFormData({ ...formData, seoTags: e.target.value })}
                                 className="w-full px-3 py-2 border rounded-md text-sm"
                                 placeholder="news, tamil, breaking..."
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-slate-700">URL Slug (English)</label>
+                            <input
+                                type="text"
+                                value={formData.slug}
+                                onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                                className="w-full px-3 py-2 border rounded-md text-sm font-mono text-slate-600 bg-slate-50"
+                                placeholder="url-slug-here"
                             />
                         </div>
                     </div>

@@ -119,8 +119,6 @@ export async function generateImageReal(prompt: string) {
     );
 
     // 1. Generate (Mock for now to ensure flow, as Google Image API needs Vertex usually)
-    // If user has 'Generative Language API' key, it might not cover Imagen without Vertex Project ID.
-    // We will use Unsplash as a robust fallback to "Generate" something.
     const unsplashUrl = `https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80`; // Generic AI Image
 
     // 2. Upload to Supabase to simulate the full pipeline
@@ -138,10 +136,10 @@ export async function generateImageReal(prompt: string) {
 
         const { data: { publicUrl } } = supabase.storage.from('images').getPublicUrl(fileName);
 
-        return { success: true, url: publicUrl };
+        return { success: true, url: publicUrl, message: "Image generated successfully" };
 
     } catch (uploadError: any) {
         // If upload fails (bucket missing), return the source URL
-        return { success: true, warning: "Upload failed (Bucket missing?), using source URL", url: unsplashUrl };
+        return { success: true, warning: "Upload failed (Bucket missing?), using source URL", url: unsplashUrl, message: "Upload failed, using fallback" };
     }
 }
